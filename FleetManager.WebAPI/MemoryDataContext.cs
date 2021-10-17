@@ -76,20 +76,16 @@ namespace FleetManager.WebAPI
 
         public bool Remove(Car car)
         {
-            if (car.Id.HasValue)
-            {
-                return _cars.Remove(_cars.SingleOrDefault(c => c.Id == car.Id));
-            }
-            throw new DaoException("An error ocurred while removing car");
+            if (car == null || !car.Id.HasValue)
+                return false;
+            return _cars.Remove(_cars.SingleOrDefault(c => c.Id == car.Id));
         }
 
         public bool Remove(Location location)
         {
-            if (location.Id.HasValue)
-            {
-                return _locations.Remove(_locations.SingleOrDefault(c => c.Id == location.Id));
-            }
-            throw new DaoException("An error ocurred while removing location");
+            if (location == null || !location.Id.HasValue)
+                return false;
+            return _locations.Remove(_locations.SingleOrDefault(c => c.Id == location.Id));
         }
 
         public int GenerateId<TModel>()
