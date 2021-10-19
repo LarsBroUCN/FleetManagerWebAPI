@@ -22,8 +22,11 @@ namespace FleetManager.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // TODO: (Step 2) change the call to the dao factory so it recieves the data context for the SQL Server database
-            services.AddScoped(s => DaoFactory.Create<Car>(MemoryDataContext.Instance));
-            services.AddScoped(s => DaoFactory.Create<Location>(MemoryDataContext.Instance));
+            // services.AddScoped(s => DaoFactory.Create<Car>(MemoryDataContext.Instance)); // No singletons on server/web api
+            // services.AddScoped(s => DaoFactory.Create<Location>(MemoryDataContext.Instance));
+
+            services.AddScoped(s => DaoFactory.Create<Car>(new SQLServerDataContext())); //Samme assembly må man godt lave hård kobling
+            services.AddScoped(s => DaoFactory.Create<Location>(new SQLServerDataContext()));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
