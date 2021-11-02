@@ -1,4 +1,5 @@
 ﻿using FleetManager.WebAPI.Model;
+using RestSharp;
 using System;
 using System.Data;
 
@@ -18,6 +19,15 @@ namespace FleetManager.WebAPI.Data
                 {
                     var dao when dao == typeof(Car) => new Daos.Memory.CarDao(dataContext as ITypedDataContext) as IDao<TModel>,
                     var dao when dao == typeof(Location) => new Daos.Memory.LocationDao(dataContext as ITypedDataContext) as IDao<TModel>,
+                    _ => throw new DaoFactoryException($"Model [{typeof(TModel).Name}] not supported"),
+                };
+            }
+            if (typeof(ITypedDataContext).IsAssignableFrom(dataContextType))
+            {
+                return typeof(TModel) switch
+                {
+                    var dao when dao == typeof(Car) => new Daos.Rest.CarDao(dataContext as IDataContext<IRestClient>) as IDao<TModel>,
+                    var dao when dao == typeof(Location) => new Daos.Rest.LocationDao(dataContext as IDataContext<IRestClient>) as IDao<TModel>,
                     _ => throw new DaoFactoryException($"Model [{typeof(TModel).Name}] not supported"),
                 };
             }

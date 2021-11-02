@@ -7,7 +7,7 @@ namespace FleetManager.WebAPI.Data
     {
 
     }
- 
+
     /// <summary>
     /// Interface for generic connections to a datasource
     /// </summary>
